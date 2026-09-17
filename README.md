@@ -23,7 +23,8 @@ SettleSmart is a full-stack group expense application. Admins create groups, inv
 - FastAPI, SQLAlchemy, and Pydantic
 - PostgreSQL 16
 - Alembic migrations
-- Nginx production frontend and reverse proxy
+- Nginx production frontend and API proxy
+- Caddy automatic HTTPS reverse proxy
 - Pytest
 
 ## Local Development
@@ -61,7 +62,7 @@ npm run build
 
 ## Production Deployment
 
-The production Compose configuration serves the compiled frontend through Nginx, proxies API and WebSocket traffic to FastAPI, keeps PostgreSQL private, runs migrations during backend startup, and persists database and upload data in named volumes.
+The production Compose configuration serves the compiled frontend through Nginx, proxies API and WebSocket traffic to FastAPI, obtains HTTPS certificates through Caddy, keeps PostgreSQL private, runs migrations during backend startup, and persists database and upload data in named volumes.
 
 1. Copy the production environment template.
 
@@ -69,7 +70,7 @@ The production Compose configuration serves the compiled frontend through Nginx,
 cp .env.production.example .env.production
 ```
 
-2. Set a long URL-safe database password, final HTTPS origin, and accepted hostname in `.env.production`.
+2. Set a long URL-safe database password, domain, final HTTPS origin, and accepted hostname in `.env.production`. Point the domain's DNS `A` record to the server first.
 
 3. Start the production stack.
 
@@ -77,13 +78,14 @@ cp .env.production.example .env.production
 docker compose --env-file .env.production -f docker-compose.prod.yml up --build -d
 ```
 
-4. Put the service behind HTTPS using your hosting platform or an external TLS reverse proxy. The Compose service listens on host port `8080` by default.
+4. Allow inbound TCP ports `80` and `443`, plus UDP `443`, in the server firewall. Caddy will obtain and renew the HTTPS certificate automatically. The app also listens on loopback port `8080` for server-local checks.
 
 5. Visit `/login` and create the first real admin account.
 
 ### Required Environment Values
 
 - `POSTGRES_PASSWORD`: long URL-safe password used only by PostgreSQL
+- `DOMAIN`: public hostname with no protocol, such as `expenses.example.com`
 - `PUBLIC_ORIGIN`: final origin such as `https://expenses.example.com`
 - `ALLOWED_HOSTS`: accepted API hostname, or comma-separated hostnames
 - `APP_PORT`: optional host port; defaults to `8080`
