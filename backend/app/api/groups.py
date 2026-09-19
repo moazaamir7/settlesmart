@@ -1,10 +1,10 @@
-from pathlib import Path
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, File, Header, HTTPException, Response, UploadFile, WebSocket, WebSocketDisconnect, status
 from sqlalchemy.orm import Session
 
 from app.db.session import SessionLocal, get_db
+from app.core.config import get_settings
 from app.models.user import AdminUser
 from app.schemas.expense import ExpenseCreate, ExpenseRead
 from app.schemas.group import (
@@ -28,7 +28,6 @@ from app.services.settlement_service import SettlementService
 from app.services.realtime import realtime_manager
 
 router = APIRouter(prefix="/groups", tags=["groups"])
-UPLOAD_DIR = Path("/app/uploads")
 ALLOWED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 MAX_IMAGE_BYTES = 5 * 1024 * 1024
 
@@ -207,14 +206,19 @@ async def upload_group_image(
     content = await image.read(MAX_IMAGE_BYTES + 1)
     if len(content) > MAX_IMAGE_BYTES:
         raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="Image must be 5 MB or smaller.")
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    upload_dir = get_settings().upload_path
+    upload_dir.mkdir(parents=True, exist_ok=True)
     filename = f"{group_id}-{uuid4().hex}{extension}"
-    (UPLOAD_DIR / filename).write_bytes(content)
+    (upload_dir / filename).write_bytes(content)
     return GroupService(db).update_group_image(group_id, f"/uploads/{filename}", admin)
 
 
 @router.websocket("/{group_id}/ws")
 async def group_websocket(websocket: WebSocket, group_id: str, token: str) -> None:
+    origin = (websocket.headers.get("origin") or "").rstrip("/")
+    if origin not in get_settings().cors_origins:
+        await websocket.close(code=4403)
+        return
     with SessionLocal() as db:
         try:
             identity = AuthService(db).get_identity(token)

@@ -62,6 +62,10 @@ npm run build
 
 ## Production Deployment
 
+For the free Neon + Render + Vercel deployment, follow [DEPLOYMENT.md](DEPLOYMENT.md). The instructions include exact dashboard values, deployment order, environment variables, migrations, CORS, WebSockets, and the free Render upload-storage limitation.
+
+### Docker Deployment
+
 The production Compose configuration serves the compiled frontend through Nginx, proxies API and WebSocket traffic to FastAPI, obtains HTTPS certificates through Caddy, keeps PostgreSQL private, runs migrations during backend startup, and persists database and upload data in named volumes.
 
 1. Copy the production environment template.

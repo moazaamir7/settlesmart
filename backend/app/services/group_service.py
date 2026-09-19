@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models.group import Group, GroupInvite, GroupMessage, Participant
+from app.core.config import get_settings
 from app.repositories.group_repository import GroupRepository
 from app.models.user import AdminUser
 from app.schemas.group import GroupCreate, GroupMessageCreate, GroupUpdate, ParticipantCreate
@@ -106,7 +107,7 @@ class GroupService:
     def upload_path(image_url: str | None) -> Path | None:
         if not image_url or not image_url.startswith("/uploads/"):
             return None
-        return Path("/app/uploads") / Path(image_url).name
+        return get_settings().upload_path / Path(image_url).name
 
     def remove_participant(self, group_id: str, participant_id: str, admin: AdminUser) -> None:
         self.require_admin(group_id, admin)

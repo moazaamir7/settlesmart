@@ -11,10 +11,16 @@ import type {
   SettlementSummary
 } from "../types/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1";
-export const API_ORIGIN = API_BASE_URL.startsWith("http")
-  ? API_BASE_URL.replace(/\/api\/v1\/?$/, "")
+const configuredApiUrl = import.meta.env.VITE_API_URL
+  ?? import.meta.env.VITE_API_BASE_URL
+  ?? "http://localhost:8000";
+const normalizedApiUrl = configuredApiUrl.replace(/\/+$/, "");
+export const API_ORIGIN = normalizedApiUrl.startsWith("http")
+  ? normalizedApiUrl.replace(/\/api\/v1$/, "")
   : window.location.origin;
+const API_BASE_URL = normalizedApiUrl.endsWith("/api/v1")
+  ? normalizedApiUrl
+  : `${normalizedApiUrl}/api/v1`;
 export const WS_BASE_URL = API_ORIGIN.replace(/^http/, "ws");
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {

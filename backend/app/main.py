@@ -11,6 +11,7 @@ from app.core.config import get_settings
 
 def create_app() -> FastAPI:
     settings = get_settings()
+    settings.upload_path.mkdir(parents=True, exist_ok=True)
     app = FastAPI(
         title="Smart Group Expenses API",
         version="0.1.0",
@@ -30,7 +31,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(auth_router, prefix="/api/v1")
     app.include_router(groups_router, prefix="/api/v1")
-    app.mount("/uploads", StaticFiles(directory="/app/uploads", check_dir=False), name="uploads")
+    app.mount("/uploads", StaticFiles(directory=settings.upload_path), name="uploads")
 
     @app.middleware("http")
     async def security_headers(request: Request, call_next):

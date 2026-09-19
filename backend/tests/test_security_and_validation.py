@@ -3,6 +3,7 @@ from pydantic import ValidationError
 
 from app.schemas.group import GroupCreate
 from app.schemas.expense import ExpenseCreate
+from app.core.config import Settings
 from app.services.auth_service import AuthService
 
 
@@ -62,3 +63,26 @@ def test_invalid_expense_numbers_are_rejected(field: str, value: str) -> None:
 def test_discount_cannot_make_expense_total_negative() -> None:
     with pytest.raises(ValidationError, match="Discount cannot be greater"):
         ExpenseCreate(**valid_expense(subtotal="10", tax_rate="0", tip_rate="0", discounts="10.01"))
+
+
+@pytest.mark.parametrize(
+    ("database_url", "expected"),
+    [
+        ("postgres://user:pass@host/db?sslmode=require", "postgresql+psycopg://user:pass@host/db?sslmode=require"),
+        ("postgresql://user:pass@host/db", "postgresql+psycopg://user:pass@host/db"),
+        ("postgresql+psycopg://user:pass@host/db", "postgresql+psycopg://user:pass@host/db"),
+    ],
+)
+def test_managed_postgres_urls_use_psycopg_driver(database_url: str, expected: str) -> None:
+    settings = Settings(DATABASE_URL=database_url)
+
+    assert settings.sqlalchemy_database_url == expected
+
+
+def test_frontend_url_is_added_to_cors_origins_without_trailing_slash() -> None:
+    settings = Settings(
+        BACKEND_CORS_ORIGINS="http://localhost:5173",
+        FRONTEND_URL="https://settlesmart.vercel.app/",
+    )
+
+    assert settings.cors_origins == ["http://localhost:5173", "https://settlesmart.vercel.app"]
