@@ -23,8 +23,8 @@
 }
 
 * { box-sizing: border-box; }
-html:root { background: #101312; scroll-behavior: smooth; }
-body { background: #101312; margin: 0; min-height: 100vh; min-height: 100dvh; overflow-x: clip; }
+html:root { background: #141316; scroll-behavior: smooth; }
+body { background: #141316; margin: 0; min-height: 100vh; min-height: 100dvh; overflow-x: clip; }
 #root { min-height: 100vh; min-height: 100dvh; }
 button, input, select, textarea { font: inherit; }
 h1, h2, h3, p { margin: 0; }
@@ -314,3 +314,48 @@ label {
   .group-header h2 { font-size: 2.35rem; }
   .preview-window { padding: 16px; }
 }
+
+/* Portfolio theme: warm carbon, coral commands, cool technical details. */
+.portfolio-page {
+  --portfolio-bg: #141316;
+  --portfolio-surface: #1d1c21;
+  --portfolio-surface-hover: #242329;
+  --portfolio-border: #343139;
+  --portfolio-border-active: #79514f;
+  --portfolio-coral: #ff8c7a;
+  --portfolio-coral-soft: #ffb0a3;
+  --portfolio-cyan: #73c9c7;
+  --portfolio-cyan-soft: #91d7d3;
+  --portfolio-text: #f2efea;
+  --portfolio-muted: #aaa6ad;
+  --portfolio-faint: #77747d;
+  background: var(--portfolio-bg);
+  color: var(--portfolio-text);
+}
+.portfolio-nav :is(a, button) { color: var(--portfolio-muted); }
+.portfolio-nav :is(a, button):hover { color: var(--portfolio-coral); }
+.portfolio-nav :is(a, button):focus-visible { outline-color: var(--portfolio-coral); }
+.portfolio-title p { color: var(--portfolio-cyan); }
+.portfolio-title p::before { color: var(--portfolio-coral); }
+.portfolio-title h1 { color: var(--portfolio-text); }
+.portfolio-section-title, .portfolio-section-title h2 { color: var(--portfolio-coral); }
+.portfolio-item { background: var(--portfolio-surface); border-color: var(--portfolio-border); color: var(--portfolio-text); }
+.portfolio-item:hover { background: var(--portfolio-surface-hover); border-color: var(--portfolio-border-active); }
+.portfolio-item-static:hover { background: var(--portfolio-surface); border-color: var(--portfolio-border); }
+.portfolio-item svg { color: var(--portfolio-coral); }
+.item-main strong { color: var(--portfolio-text); }
+.item-main small, .item-meta { color: var(--portfolio-faint); }
+.item-detail { color: var(--portfolio-muted); }
+.tech-list small { background: #172426; border-color: #315051; color: var(--portfolio-cyan-soft); }
+.projects-more-button { color: var(--portfolio-coral); }
+.projects-more-button:hover:not(:disabled) { color: var(--portfolio-coral-soft); }
+.projects-more-button:focus-visible { outline-color: var(--portfolio-coral); }
+.portfolio-footer { border-color: var(--portfolio-border); color: var(--portfolio-faint); }
+.portfolio-footer a { color: var(--portfolio-muted); }
+.resume-preview-backdrop { background: rgba(8, 7, 10, .86); }
+.resume-preview { background: var(--portfolio-surface); border-color: var(--portfolio-border); }
+.resume-preview header { border-color: var(--portfolio-border); color: var(--portfolio-muted); }
+.resume-preview header button { color: var(--portfolio-muted); }
+.resume-preview header button:hover { background: var(--portfolio-surface-hover); color: var(--portfolio-coral); }
+.resume-preview header button:focus-visible { outline-color: var(--portfolio-coral); }
+.resume-page-scroll { background: #25242a; }
