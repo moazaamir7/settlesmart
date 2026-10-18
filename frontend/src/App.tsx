@@ -1,23 +1,24 @@
-import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, KeyboardEvent, ReactNode, useEffect, useMemo, useState } from "react";
 import {
-  ArrowRight,
+  BriefcaseBusiness,
+  CalendarDays,
   Check,
-  CheckCircle2,
+  Code2,
   Copy,
+  FileText,
   ImagePlus,
   Link2,
   LogOut,
+  Mail,
   MessageCircle,
   Plus,
-  Radio,
   ReceiptText,
   Send,
   Settings,
   Share2,
   Trash2,
-  UsersRound,
   WalletCards,
-  ShieldCheck
+  X,
 } from "lucide-react";
 
 import { API_ORIGIN, WS_BASE_URL, api } from "./lib/api";
@@ -30,6 +31,102 @@ const taxPresets = [
   { label: "Alberta GST 5%", value: "5" },
   { label: "No tax", value: "0" }
 ];
+
+function GithubIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg aria-hidden="true" height={size} viewBox="0 0 24 24" width={size} fill="currentColor">
+      <path d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.28-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18A10.98 10.98 0 0 1 12 6.12c.98 0 1.95.13 2.87.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.71 5.38-5.29 5.67.42.36.79 1.07.79 2.16v3.25c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" />
+    </svg>
+  );
+}
+
+function LinkedinIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg aria-hidden="true" height={size} viewBox="0 0 24 24" width={size} fill="currentColor">
+      <path d="M5.37 7.98H1.81V19.4h3.56V7.98ZM3.59 2.3a2.06 2.06 0 1 0 0 4.12 2.06 2.06 0 0 0 0-4.12ZM19.7 13.54c0-3.44-1.84-5.04-4.29-5.04-1.98 0-2.86 1.09-3.35 1.85V7.98H8.5V19.4h3.56v-5.66c0-1.49.28-2.93 2.13-2.93 1.82 0 1.84 1.7 1.84 3.03v5.56h3.56l.11-5.86Z" />
+    </svg>
+  );
+}
+
+const portfolio = {
+  name: "moaz aamir",
+  role: "computer & software engineer",
+  email: "moaz.aamir@torontomu.ca",
+  links: [
+    { label: "github", href: "https://github.com/moazaamir7", icon: GithubIcon },
+    { label: "linkedin", href: "https://www.linkedin.com/in/moaza7/", icon: LinkedinIcon },
+    { label: "resume", href: "/resume.pdf", icon: FileText },
+    { label: "email", href: "mailto:moaz.aamir@torontomu.ca", icon: Mail }
+  ],
+  current: [
+    {
+      title: "Computer Engineering",
+      org: "Toronto Metropolitan University",
+      meta: "2024 - 2029",
+      detail: "",
+      href: "https://www.torontomu.ca/",
+      logo: "/tmu-logo-one-colour.jpg"
+    }
+  ],
+  previous: [
+    {
+      title: "SWE Intern",
+      org: "Applied Optimal",
+      meta: "May - Jul 2026",
+      detail: "",
+      skills: ["Flutter", "FastAPI", "Supabase", "RBAC", "Stripe"],
+      href: "",
+      logo: "/applied-optimal-logo.png"
+    },
+    {
+      title: "SWE Intern",
+      org: "Vision Allies",
+      meta: "Mar - May 2026",
+      detail: "",
+      skills: ["TypeScript", "Material UI", "SaaS Architecture"],
+      href: "https://vision-allies.com/",
+      logo: "/vision-allies-enhanced.png"
+    },
+    {
+      title: "SWE Intern",
+      org: "0.5 Labs",
+      meta: "Sep - Dec 2025",
+      detail: "",
+      skills: ["React.js", "Pandas", "SQL", "REST APIs"],
+      href: "https://pointfivelabs.io/en",
+      logo: "/pointfive.jpeg"
+    },
+    {
+      title: "SWE Intern",
+      org: "Stylus Marketing",
+      meta: "May - Aug 2025",
+      detail: "",
+      skills: ["Python", "Excel", "Workflow Automation"],
+      href: "https://www.stylusmarketing.ca/",
+      logo: "/stylus-logo.png"
+    }
+  ],
+  projects: [
+    {
+      title: "SettleSmart",
+      stack: ["FastAPI", "PostgreSQL", "WebSockets"],
+      href: "https://settlesmart-expenses.vercel.app",
+      logo: "settlesmart"
+    },
+    {
+      title: "Quoted.",
+      stack: ["Python", "scikit-learn", "Explainable AI"],
+      href: "https://github.com/moazaamir7/insurance-premium-ai",
+      logo: "/quoted-logo.png"
+    },
+    {
+      title: "MarketPilot AI",
+      stack: ["React", "Chart.js", "SQLite", "Random Forest"],
+      href: "https://github.com/moazaamir7/marketpilot-ai",
+      logo: "/marketpilot-ai-logo.svg"
+    }
+  ]
+};
 
 const emptyExpense: ExpenseCreate = {
   name: "",
@@ -698,58 +795,166 @@ function App() {
   );
 }
 
-function LandingPage({ hasSession }: { hasSession: boolean }) {
+function LandingPage({ hasSession: _hasSession }: { hasSession: boolean }) {
+  const [resumeOpen, setResumeOpen] = useState(false);
+  const [moreProjectsOpen, setMoreProjectsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!resumeOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setResumeOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [resumeOpen]);
+
   return (
-    <main className="landing-page">
-      <header className="landing-nav">
-        <a className="landing-brand" href="/" aria-label="SettleSmart home">
-          <span className="brand-mark"><WalletCards size={21} /></span>
-          <strong>SettleSmart</strong>
-        </a>
-        <a className="landing-login" href={hasSession ? "/app" : "/login"}>{hasSession ? "Open app" : "Log in"}</a>
-      </header>
-
-      <section className="landing-hero">
-        <div className="landing-copy">
-          <p className="landing-kicker">Group expenses, without the group chat math</p>
-          <h1>SettleSmart</h1>
-          <p className="landing-lede">Create a group, share one invite link, and keep every expense, balance, and payment clear for everyone.</p>
-          <div className="landing-actions">
-            <a className="landing-primary" href={hasSession ? "/app" : "/login"}>{hasSession ? "Open your groups" : "Get started"}<ArrowRight size={18} /></a>
-            <a className="landing-secondary" href="#how-it-works">How it works</a>
+    <main className="portfolio-page">
+      <section className="portfolio-shell">
+        <header className="portfolio-hero">
+          <div className="portfolio-title">
+            <p>{portfolio.role}</p>
+            <h1>{portfolio.name}</h1>
+            <nav className="portfolio-nav" aria-label="Primary links">
+              {portfolio.links.map(({ label, href, icon: Icon }) =>
+                label === "resume" ? (
+                  <button aria-label="preview resume" key={label} onClick={() => setResumeOpen(true)} title="resume" type="button">
+                    <Icon size={17} />
+                  </button>
+                ) : (
+                  <a
+                    aria-label={label}
+                    href={href}
+                    key={label}
+                    rel="noreferrer"
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    title={label}
+                  >
+                    <Icon size={17} />
+                  </a>
+                )
+              )}
+            </nav>
           </div>
-        </div>
 
-        <div className="product-preview" aria-label="SettleSmart product preview">
-          <div className="preview-topbar"><span>Cottage weekend</span><span>Overview</span></div>
-          <div className="preview-metrics">
-            <span><strong>4</strong>Members</span>
-            <span><strong>$428.60</strong>Total spent</span>
-            <span><strong>2</strong>Payments left</span>
+        </header>
+
+        <PortfolioSection icon={<BriefcaseBusiness size={18} />} title="currently" items={portfolio.current} />
+        <PortfolioSection icon={<CalendarDays size={18} />} title="previously" items={portfolio.previous} />
+
+        <section className="portfolio-section" aria-labelledby="projects-heading">
+          <div className="portfolio-section-title">
+            <Code2 size={18} />
+            <h2 id="projects-heading">projects</h2>
           </div>
-          <div className="preview-content">
-            <div className="preview-list">
-              <p>Recent expenses</p>
-              <span><i><ReceiptText size={15} /></i><b>Dinner</b><small>$186.40</small></span>
-              <span><i><Send size={15} /></i><b>Ride home</b><small>$42.20</small></span>
-              <span><i><WalletCards size={15} /></i><b>Groceries</b><small>$200.00</small></span>
+          <div className="portfolio-list">
+            {portfolio.projects.map((project) => (
+              <a className="portfolio-item project-item" key={project.title} href={project.href} target="_blank" rel="noreferrer">
+                <span className="project-heading">
+                  {project.logo === "settlesmart" ? (
+                    <span className="project-logo" aria-hidden="true"><WalletCards size={20} /></span>
+                  ) : project.logo ? (
+                    <img className="project-image-logo" src={project.logo} alt="" aria-hidden="true" />
+                  ) : null}
+                  <span className="item-main">
+                    <strong>{project.title}</strong>
+                  </span>
+                </span>
+                <span className="tech-list">{project.stack.map((tech) => <small key={tech}>{tech}</small>)}</span>
+              </a>
+            ))}
+          </div>
+          <button
+            aria-controls="more-projects"
+            aria-expanded={moreProjectsOpen}
+            className="projects-more-button"
+            onClick={() => setMoreProjectsOpen((open) => !open)}
+            type="button"
+          >
+            {moreProjectsOpen ? "- see less" : "+ see more"}
+          </button>
+          <div className="portfolio-list more-projects" hidden={!moreProjectsOpen} id="more-projects" />
+        </section>
+
+        <footer className="portfolio-footer">
+          <span>last updated: september 2026</span>
+          <a href={`mailto:${portfolio.email}`}>{portfolio.email}</a>
+        </footer>
+      </section>
+
+      {resumeOpen && (
+        <div className="resume-preview-backdrop" role="presentation" onClick={() => setResumeOpen(false)}>
+          <section className="resume-preview" role="dialog" aria-modal="true" aria-labelledby="resume-preview-title" onClick={(event) => event.stopPropagation()}>
+            <header>
+              <span id="resume-preview-title">resume.pdf</span>
+              <button aria-label="close resume preview" onClick={() => setResumeOpen(false)} title="close" type="button">
+                <X size={17} />
+              </button>
+            </header>
+            <div className="resume-page-scroll">
+              <img src="/resume-pages/moaz-aamir-resume.png" alt="Moaz Aamir resume" />
             </div>
-            <div className="preview-settle"><CheckCircle2 size={24} /><strong>Smallest number of payments</strong><p>Balances are calculated automatically.</p></div>
-          </div>
+          </section>
         </div>
-      </section>
-
-      <section className="landing-steps" id="how-it-works">
-        <div className="section-heading"><p>How it works</p><h2>From shared cost to settled up.</h2></div>
-        <div className="step-grid">
-          <article><span><UsersRound size={20} /></span><p>01</p><h3>Create a group</h3><small>Choose CAD or USD and add the people sharing the cost.</small></article>
-          <article><span><Radio size={20} /></span><p>02</p><h3>Invite everyone</h3><small>Send one link. Guests join instantly without creating an account.</small></article>
-          <article><span><ShieldCheck size={20} /></span><p>03</p><h3>Settle clearly</h3><small>Track expenses and see exactly who should pay whom.</small></article>
-        </div>
-      </section>
-
-      <footer className="landing-footer"><span>SettleSmart</span><a href={hasSession ? "/app" : "/login"}>{hasSession ? "Open app" : "Log in"}<ArrowRight size={16} /></a></footer>
+      )}
     </main>
+  );
+}
+
+function PortfolioSection({
+  icon,
+  title,
+  items
+}: {
+  icon: ReactNode;
+  title: string;
+  items: Array<{ title: string; org: string; meta: string; detail: string; href: string; logo?: string; skills?: string[] }>;
+}) {
+  return (
+    <section className="portfolio-section" aria-labelledby={`${title}-heading`}>
+      <div className="portfolio-section-title">
+        {icon}
+        <h2 id={`${title}-heading`}>{title}</h2>
+      </div>
+      <div className="portfolio-list">
+        {items.map((item) => {
+          const content = (
+            <>
+              {item.logo && <img className="item-logo" src={item.logo} alt={item.org} />}
+              <span className="item-main">
+                <strong>{item.title}</strong>
+                <small>{item.org}</small>
+              </span>
+              {item.detail && <span className="item-detail">{item.detail}</span>}
+              <span className="item-meta">{item.meta}</span>
+              {item.skills && (
+                <span className="tech-list experience-skills">
+                  {item.skills.map((skill) => <small key={skill}>{skill}</small>)}
+                </span>
+              )}
+            </>
+          );
+
+          return item.href ? (
+            <a className={`portfolio-item${item.skills ? " experience-item" : ""}${item.logo ? " logo-item" : ""}${item.skills && item.logo ? " experience-logo-item" : ""}`} key={`${item.title}-${item.org}`} href={item.href} target="_blank" rel="noreferrer">
+              {content}
+            </a>
+          ) : (
+            <article className={`portfolio-item portfolio-item-static${item.skills ? " experience-item" : ""}`} key={`${item.title}-${item.org}`}>
+              {content}
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
