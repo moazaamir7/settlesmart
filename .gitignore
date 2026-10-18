@@ -13,3 +13,7 @@ node_modules/
 dist/
 .vite/
 postgres-data/
+
+# Separate project repositories linked from the portfolio.
+insurance-premium-ai/
+marketpilot-ai/
